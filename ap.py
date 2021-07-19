@@ -8,7 +8,7 @@ $ python3 ap.py data_folder obs_type out_name
         1 = recent, 2 = archival 2019, 3 = archival 2018
     out_name = name of output file without extension to write starting from ./out
 """
-
+import FilterMagnitudes
 import sys
 from glob import glob
 
@@ -46,7 +46,7 @@ def load_image(filepath):
 
 
 def find_stars(
-    im, uncertainty_im, minimum_pixel_size_of_stars, minimum_signal_to_noise=5
+        im, uncertainty_im, minimum_pixel_size_of_stars, minimum_signal_to_noise=5
 ):
     signal_to_noise_image = im / uncertainty_im
     daofind = DAOStarFinder(
@@ -121,7 +121,7 @@ def find_brightest_near(phot_table, x, y, r):
 
 
 def get_relative_magnitude(
-    phot_table, star_coords, comparison_star_coords, exposure_time
+        phot_table, star_coords, comparison_star_coords, exposure_time
 ):
     number_of_comparison_stars = len(comparison_star_coords["x"])
     comparison_star_phot_table = []
@@ -185,13 +185,13 @@ def mag_to_flux(magnitude):
 
 # Putting all the above functions together:
 def process_image(
-    filepath_to_e91_file,
-    star_coords,
-    comparison_star_coords,
-    x_limits,
-    y_limits,
-    minimum_pixel_size_of_stars,
-    aperture_pixel_radius,
+        filepath_to_e91_file,
+        star_coords,
+        comparison_star_coords,
+        x_limits,
+        y_limits,
+        minimum_pixel_size_of_stars,
+        aperture_pixel_radius,
 ):
     im, uncertainty_im, exposure_time, observation_time = load_image(
         filepath_to_e91_file
@@ -238,9 +238,8 @@ if obs_type == 1:  # 7/10/21-7/17/21
     minimum_pixel_size_of_stars = 15
     aperture_pixel_radius = 30
     comparison_magnitude = -2.5 * np.log10(
-        np.average([mag_to_flux(11.35), mag_to_flux(9.49)])
+        np.average([mag_to_flux(FilterMagnitudes.HD191224["v"]), mag_to_flux(FilterMagnitudes.TYC31628791["v"])])
     )
-    # TYC 3162-879-1 (11.35) and HD 191224 (9.49) in V filter
 
 elif obs_type == 2:  # 8/1/19-9/30/19
     star_coords = {"x": 1530, "y": 1020, "r": 100}
@@ -252,9 +251,8 @@ elif obs_type == 2:  # 8/1/19-9/30/19
     minimum_pixel_size_of_stars = 10
     aperture_pixel_radius = 30
     comparison_magnitude = -2.5 * np.log10(
-        np.average([mag_to_flux(10.880), mag_to_flux(10.5)])
+        np.average([mag_to_flux(FilterMagnitudes.HD191224["rp"]), mag_to_flux(FilterMagnitudes.TYC31628791["rp"])])
     )
-    # TYC 3162-879-1 (10.880) and HD 191224 (10.5) in R filter
 
 elif obs_type == 3:  # 2018
     star_coords = {"x": 780, "y": 500, "r": 50}
@@ -266,9 +264,8 @@ elif obs_type == 3:  # 2018
     minimum_pixel_size_of_stars = 5
     aperture_pixel_radius = 10
     comparison_magnitude = -2.5 * np.log10(
-        np.average([mag_to_flux(10.880), mag_to_flux(10.5)])
+        np.average([mag_to_flux(FilterMagnitudes.HD191224["rp"]), mag_to_flux(FilterMagnitudes.TYC31628791["rp"])])
     )
-    # TYC 3162-879-1 (10.880) and HD 191224 (10.5) in R' filter
 
 else:
     print("Invalid obs_type")

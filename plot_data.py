@@ -15,6 +15,8 @@ import numpy as np
 from astropy.table import Table
 from astropy.time import Time
 
+import FilterMagnitudes
+
 
 def mag_to_flux(magnitude):
     return 10 ** (-0.4 * magnitude)
@@ -33,56 +35,54 @@ comparison_magnitude = 0
 
 if obs_type == 1:  # 7/10/21-7/17/21
     comparison_magnitude = -2.5 * np.log10(
-        np.average([mag_to_flux(11.35), mag_to_flux(9.49)])
+        np.average([mag_to_flux(FilterMagnitudes.HD191224["v"]), mag_to_flux(FilterMagnitudes.TYC31628791["v"])])
     )
-    # TYC 3162-879-1 (11.35) and HD 191224 (9.49) in V filter
 elif obs_type == 2:  # 8/1/19-9/30/19
     comparison_magnitude = -2.5 * np.log10(
-        np.average([mag_to_flux(10.880), mag_to_flux(10.5)])
+        np.average([mag_to_flux(FilterMagnitudes.HD191224["rp"]), mag_to_flux(FilterMagnitudes.TYC31628791["rp"])])
     )
-    # TYC 3162-879-1 (10.880) and HD 191224 (10.5) in R filter
 elif obs_type == 3:  # 2018
     comparison_magnitude = -2.5 * np.log10(
-        np.average([mag_to_flux(10.880), mag_to_flux(10.5)])
+        np.average([mag_to_flux(FilterMagnitudes.HD191224["rp"]), mag_to_flux(FilterMagnitudes.TYC31628791["rp"])])
     )
-    # TYC 3162-879-1 (10.880) and HD 191224 (10.5) in R' filter
 else:
     print("Invalid obs_type")
     raise Exception
 
-
 tabby_results = Table.read("./out/" + str(out_name) + ".csv", format='csv')
 tabby_results['time'] = Time(tabby_results['time'])
 
-to_remove = []
-print(tabby_results)
-threshold = 0.2
-
+# to_remove = []
+# print(tabby_results)
+# threshold = 0.05
+#
 # for i in range(len(tabby_results['mag_error'])):
 #     # print(tabby_results['mag_error'][i])
 #     if tabby_results['mag_error'][i] > threshold:
 #        # del tabby_results[i] iterator error
 #        to_remove.insert(0, i) #sorted backwards
-
+#
 # for i in to_remove:
 #     # print(i,tabby_results['mag_error'][i])
 #     del tabby_results[i]
-
+# #
 # to_remove = []
-
+#
 # for i in range(len(tabby_results['mag'])):
 #     # print(tabby_results['mag_error'][i])
-#     if tabby_results['mag'][i] > 13-comparison_magnitude or tabby_results['mag'][i] <11-comparison_magnitude:
+#     if tabby_results['mag'][i] > 11.6-comparison_magnitude or tabby_results['mag'][i] <11.3-comparison_magnitude:
 #        # del tabby_results[i] iterator error
 #        to_remove.insert(0, i) #sorted backwards
-
+#
 # for i in to_remove:
 #     # print(i,tabby_results['mag_error'][i])
 #     del tabby_results[i]
+
+tabby_results.write("2019.csv", format="csv", overwrite=True)
 
 plt.figure()
 plt.rcParams["font.family"] = "Helvetica Neue"
-plt.rcParams["font.size"] = "16"
+plt.rcParams["font.size"] = "20"
 plt.errorbar(
     (tabby_results["time"].jd - np.min(tabby_results["time"].jd)),  # *24,
     tabby_results["mag"] + comparison_magnitude,
