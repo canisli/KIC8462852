@@ -8,6 +8,8 @@ $ python3 ap.py data_folder obs_type out_name
         1 = recent, 2 = archival 2019, 3 = archival 2018
     out_name = name of output file without extension to write starting from ./out
 """
+from matplotlib.colors import LogNorm
+
 import FilterMagnitudes
 import sys
 from glob import glob
@@ -255,7 +257,7 @@ elif obs_type == 2:  # 8/1/19-9/30/19
     )
 
 elif obs_type == 3:  # 2018
-    star_coords = {"x": 780, "y": 500, "r": 50}
+    star_coords = {"x": 750, "y": 468, "r": 65}
     comparison_star_coords = {
         "x": [980, 173],
         "y": [440, 888],

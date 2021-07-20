@@ -5,8 +5,16 @@ from astropy.timeseries import LombScargle
 from astropy.timeseries import TimeSeries
 
 file = sys.argv[1]
-ts = TimeSeries.read("./out/" + file + ".csv", format="csv", time_column="time")
-frequency, power = LombScargle.from_timeseries(ts, signal_column_name="mag").autopower()
+data_type = sys.argv[2]
+if data_type == 1:
+    time = "time"
+    mag = "mag"
+else:
+    time = "JD"
+    mag = "Magnitude"
+
+ts = TimeSeries.read("./out/" + file + ".csv", format="csv", time_column=time, time_format="jd")
+frequency, power = LombScargle.from_timeseries(ts, signal_column_name=mag).autopower()
 
 plt.figure()
 plt.rcParams["font.family"] = "Helvetica Neue"
