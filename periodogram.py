@@ -7,10 +7,10 @@ from astropy.timeseries import TimeSeries
 file = sys.argv[1]
 data_type = int(sys.argv[2])
 ny = int(sys.argv[3])
-if data_type == 1:
+if data_type == 1: # LCO data
     time = "time"
     mag = "mag"
-else:
+else: # AAVSO data
     time = "JD"
     mag = "Magnitude"
 
