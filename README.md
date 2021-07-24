@@ -1,5 +1,8 @@
 # KIC 8462852 (Tabby's Star)
-KIC 8462852 A is a variable star featuring irregular light fluctuations, including a dimming of 22% in brightness. The cause is not fully understood, with several hypotheses ranging from an uneven ring of dust orbiting the star to an artificial megastructure orbiting the star. Recent research has also demonstrated that Tabby’s star is extremely likely to be a binary star system.
+KIC 8462852 A is a variable star featuring irregular light fluctuations, including a dimming of 22% in brightness. The cause is not fully understood, with several hypotheses ranging from an uneven ring of dust orbiting the star to an artificial megastructure orbiting the star. Recent research has also demonstrated that Tabby’s Star is extremely likely to be a binary star system.
+
+This project processes observational data from the Las Cumbres Observatory using `ap.py` to plot a light curve. Then, `periodogram.py` generates a Lomb-Scargle periodogram (a statistical tool to detect periodic signals in data) from the previously processed data. Lomb-Scargle periodograms for two other variable stars with known causes, Beta Persei and EPIC 204278916, are also created, based on data from AAVSO. The light curves and periodograms are qualitively compared to deduce the cause of the light fluctuations
+
 
 ---
 Libraries used: astropy, photutils, numpy, matplotlib
